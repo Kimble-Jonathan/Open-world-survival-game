@@ -24,7 +24,7 @@ public class AnimationAndMovementController : MonoBehaviour
     
     
 
-    float playerSpeed = 4f;
+    public float playerSpeed = 4f;
     float directionY;
     float turnSmoothVelocity;
     public float turnSmoothTime = 0.1f;

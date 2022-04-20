@@ -11,10 +11,12 @@ public class AttackRadius : MonoBehaviour
     public delegate void AttackEvent(IDamageable Target);
     public AttackEvent OnAttack;
     private Coroutine AttackCoroutine;
+    
 
     private void Awake()
     {
         Collider = GetComponent<SphereCollider>();
+
     }
 
     private void OnTriggerEnter(Collider other)
@@ -89,4 +91,7 @@ public class AttackRadius : MonoBehaviour
     {
         return Damageable != null && !Damageable.GetTransform().gameObject.activeSelf;
     }
+
+
+    
 }

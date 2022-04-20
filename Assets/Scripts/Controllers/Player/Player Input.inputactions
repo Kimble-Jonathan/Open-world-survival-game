@@ -40,15 +40,6 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
-                },
-                {
-                    "name": "Attack",
-                    "type": "Button",
-                    "id": "e42d98f0-52d5-4ed6-b7b6-e54d7fd12c35",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -139,15 +130,60 @@
                     "action": "Jump",
                     "isComposite": false,
                     "isPartOfComposite": false
-                },
+                }
+            ]
+        },
+        {
+            "name": "Quit",
+            "id": "3d11fe32-19ed-4fe3-afa7-bb4ad806460e",
+            "actions": [
+                {
+                    "name": "Quit Button",
+                    "type": "Button",
+                    "id": "f165c114-87fc-497a-9dc0-52a024366256",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
                 {
                     "name": "",
-                    "id": "5f179f67-4d05-4287-a51a-63af33ea9876",
+                    "id": "a44aa7eb-309c-4481-86dd-fcf2a3c80550",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Quit Button",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Attack",
+            "id": "b71dc8ac-5d89-480f-ab29-5df3aad8b9b7",
+            "actions": [
+                {
+                    "name": "Attack button",
+                    "type": "Button",
+                    "id": "093885cb-72c9-409b-ae0f-817062f7fc60",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "6091c41f-6f3f-42f4-a0b6-155022b069fe",
                     "path": "<Mouse>/leftButton",
                     "interactions": "Press",
                     "processors": "",
                     "groups": "",
-                    "action": "Attack",
+                    "action": "Attack button",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

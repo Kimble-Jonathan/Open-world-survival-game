@@ -13,8 +13,9 @@ public class PlayerAttack : MonoBehaviour
     public AttackEvent OnAttack;
     private Coroutine AttackCoroutine;
     PlayerInput playerInput;
-    bool isAttackPressed;
+    public bool isAttackPressed;
     public Animator animator;
+    public bool AttackPressedChecker;
 
 
 
@@ -32,17 +33,32 @@ public class PlayerAttack : MonoBehaviour
 
     void Update()
     {
-        while(isAttackPressed)
+    }
+
+    void OnTriggerEnter(Collider other)
+    {   
+        Debug.Log(other);
+    
+        if(isAttackPressed ==  true)
         {
-            StartCoroutine(Attack());
-        }StopCoroutine(Attack());
-        animator.SetBool("Attack",false);
+            Debug.Log("ATTACK");
+            IDamageable damageable = GetComponent<IDamageable>();
+            if (damageable != null)
+            {
+                Damageables.Add(damageable);
+
+                if (AttackCoroutine == null)
+                {
+                    AttackCoroutine = StartCoroutine(Attack());
+                }
+            }
+        }
     }
 
     private IEnumerator Attack()
     {
         WaitForSeconds Wait = new WaitForSeconds(AttackDelay);
-
+        Debug.Log("ATTACK");
         animator.SetBool("Attack", true);
 
         yield return Wait;

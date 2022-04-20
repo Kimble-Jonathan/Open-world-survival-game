@@ -98,10 +98,6 @@ public class TerrainChunk
 
 
 	}
-	public void Bake ()
-	{
-		//surface.BuildNavMesh();
-	}
 	public void Load() 
 	{
 		ThreadedDataRequester.RequestData(() => HeightMapGenerator.GenerateHeightMap (meshSettings.numVertsPerLine, meshSettings.numVertsPerLine, heightMapSettings, sampleCenter), OnHeightMapReceived);

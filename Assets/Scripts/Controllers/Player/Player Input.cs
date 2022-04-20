@@ -62,15 +62,6 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Attack"",
-                    ""type"": ""Button"",
-                    ""id"": ""e42d98f0-52d5-4ed6-b7b6-e54d7fd12c35"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -161,15 +152,60 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
-                },
+                }
+            ]
+        },
+        {
+            ""name"": ""Quit"",
+            ""id"": ""3d11fe32-19ed-4fe3-afa7-bb4ad806460e"",
+            ""actions"": [
+                {
+                    ""name"": ""Quit Button"",
+                    ""type"": ""Button"",
+                    ""id"": ""f165c114-87fc-497a-9dc0-52a024366256"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
                 {
                     ""name"": """",
-                    ""id"": ""5f179f67-4d05-4287-a51a-63af33ea9876"",
+                    ""id"": ""a44aa7eb-309c-4481-86dd-fcf2a3c80550"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": ""Press"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Quit Button"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""Attack"",
+            ""id"": ""b71dc8ac-5d89-480f-ab29-5df3aad8b9b7"",
+            ""actions"": [
+                {
+                    ""name"": ""Attack button"",
+                    ""type"": ""Button"",
+                    ""id"": ""093885cb-72c9-409b-ae0f-817062f7fc60"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""6091c41f-6f3f-42f4-a0b6-155022b069fe"",
                     ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": ""Press"",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Attack"",
+                    ""action"": ""Attack button"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -184,7 +220,12 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         m_Player_Run = m_Player.FindAction("Run", throwIfNotFound: true);
         m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
-        m_Player_Attack = m_Player.FindAction("Attack", throwIfNotFound: true);
+        // Quit
+        m_Quit = asset.FindActionMap("Quit", throwIfNotFound: true);
+        m_Quit_QuitButton = m_Quit.FindAction("Quit Button", throwIfNotFound: true);
+        // Attack
+        m_Attack = asset.FindActionMap("Attack", throwIfNotFound: true);
+        m_Attack_Attackbutton = m_Attack.FindAction("Attack button", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -248,7 +289,6 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Run;
     private readonly InputAction m_Player_Look;
     private readonly InputAction m_Player_Jump;
-    private readonly InputAction m_Player_Attack;
     public struct PlayerActions
     {
         private @PlayerInput m_Wrapper;
@@ -257,7 +297,6 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         public InputAction @Run => m_Wrapper.m_Player_Run;
         public InputAction @Look => m_Wrapper.m_Player_Look;
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
-        public InputAction @Attack => m_Wrapper.m_Player_Attack;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -279,9 +318,6 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @Jump.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
                 @Jump.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
                 @Jump.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
-                @Attack.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttack;
-                @Attack.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttack;
-                @Attack.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttack;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -298,19 +334,89 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @Jump.started += instance.OnJump;
                 @Jump.performed += instance.OnJump;
                 @Jump.canceled += instance.OnJump;
-                @Attack.started += instance.OnAttack;
-                @Attack.performed += instance.OnAttack;
-                @Attack.canceled += instance.OnAttack;
             }
         }
     }
     public PlayerActions @Player => new PlayerActions(this);
+
+    // Quit
+    private readonly InputActionMap m_Quit;
+    private IQuitActions m_QuitActionsCallbackInterface;
+    private readonly InputAction m_Quit_QuitButton;
+    public struct QuitActions
+    {
+        private @PlayerInput m_Wrapper;
+        public QuitActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @QuitButton => m_Wrapper.m_Quit_QuitButton;
+        public InputActionMap Get() { return m_Wrapper.m_Quit; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(QuitActions set) { return set.Get(); }
+        public void SetCallbacks(IQuitActions instance)
+        {
+            if (m_Wrapper.m_QuitActionsCallbackInterface != null)
+            {
+                @QuitButton.started -= m_Wrapper.m_QuitActionsCallbackInterface.OnQuitButton;
+                @QuitButton.performed -= m_Wrapper.m_QuitActionsCallbackInterface.OnQuitButton;
+                @QuitButton.canceled -= m_Wrapper.m_QuitActionsCallbackInterface.OnQuitButton;
+            }
+            m_Wrapper.m_QuitActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @QuitButton.started += instance.OnQuitButton;
+                @QuitButton.performed += instance.OnQuitButton;
+                @QuitButton.canceled += instance.OnQuitButton;
+            }
+        }
+    }
+    public QuitActions @Quit => new QuitActions(this);
+
+    // Attack
+    private readonly InputActionMap m_Attack;
+    private IAttackActions m_AttackActionsCallbackInterface;
+    private readonly InputAction m_Attack_Attackbutton;
+    public struct AttackActions
+    {
+        private @PlayerInput m_Wrapper;
+        public AttackActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Attackbutton => m_Wrapper.m_Attack_Attackbutton;
+        public InputActionMap Get() { return m_Wrapper.m_Attack; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(AttackActions set) { return set.Get(); }
+        public void SetCallbacks(IAttackActions instance)
+        {
+            if (m_Wrapper.m_AttackActionsCallbackInterface != null)
+            {
+                @Attackbutton.started -= m_Wrapper.m_AttackActionsCallbackInterface.OnAttackbutton;
+                @Attackbutton.performed -= m_Wrapper.m_AttackActionsCallbackInterface.OnAttackbutton;
+                @Attackbutton.canceled -= m_Wrapper.m_AttackActionsCallbackInterface.OnAttackbutton;
+            }
+            m_Wrapper.m_AttackActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @Attackbutton.started += instance.OnAttackbutton;
+                @Attackbutton.performed += instance.OnAttackbutton;
+                @Attackbutton.canceled += instance.OnAttackbutton;
+            }
+        }
+    }
+    public AttackActions @Attack => new AttackActions(this);
     public interface IPlayerActions
     {
         void OnMovement(InputAction.CallbackContext context);
         void OnRun(InputAction.CallbackContext context);
         void OnLook(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
-        void OnAttack(InputAction.CallbackContext context);
+    }
+    public interface IQuitActions
+    {
+        void OnQuitButton(InputAction.CallbackContext context);
+    }
+    public interface IAttackActions
+    {
+        void OnAttackbutton(InputAction.CallbackContext context);
     }
 }

@@ -94,6 +94,17 @@ public class EnemyMovement : MonoBehaviour
     private void Update()
     {
         Animator.SetBool(IsWalking, Agent.velocity.magnitude > 0.01f);
+        Despawn();
+    }
+
+    private void Despawn()
+    {
+        float Distance = Vector3.Distance(Agent.transform.position, Player.transform.position);
+
+        if(Distance > 150f)
+        {
+            Destroy(this.gameObject);
+        }
     }
 
     private void HandleStateChange(EnemyState oldState, EnemyState newState)

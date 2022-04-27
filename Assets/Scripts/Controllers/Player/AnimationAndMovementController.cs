@@ -41,6 +41,16 @@ public class AnimationAndMovementController : MonoBehaviour
         isRunningHash = Animator.StringToHash("isRunning");
     }
 
+    void Start()
+    {
+        RaycastHit hit;
+        if(Physics.Raycast(this.gameObject.transform.position,Vector3.down, out hit,500))
+        {
+            this.transform.position = hit.point;
+        }
+
+    }
+
     public void getRun(InputAction.CallbackContext ctx)
     {
         isRunPressed = ctx.ReadValueAsButton();

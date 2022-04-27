@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 606ecc2331d98e74f954872975f435b3, type: 3}
   m_Name: Attack Configuration
   m_EditorClassIdentifier: 
-  Damage: 3
+  Damage: 10
   AttackRadius: 1.5
   AttackDelay: 1.5
   BulletSpawnOffset: {x: 0, y: 1, z: 0}

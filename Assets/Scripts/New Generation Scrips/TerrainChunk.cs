@@ -109,7 +109,7 @@ public class TerrainChunk
 		return meshObject.transform.position;
 	}
 
-	 public void SpawnTrees(Vector3 chunkOffset)
+	 public void SpawnTrees()
 	{
 		
 		float maxViewDist = detailLevels[detailLevels.Length -1].visibleDstThreshold;
@@ -121,7 +121,7 @@ public class TerrainChunk
 		foreach (var point in points)
 		{
 
-			if(Physics.Raycast(new Vector3(point.x+meshObject.transform.position.x, 100, point.y + meshObject.transform.position.z ), Vector3.down, out hit, 200f)&& hit.point.y >.3f)
+			if(Physics.Raycast(new Vector3(point.x+this.meshObject.transform.position.x, 100, point.y + this.meshObject.transform.position.z ), Vector3.down, out hit, 200f)&& hit.point.y >.3f)
 			{
 
 				Quaternion spawnRotation = Quaternion.FromToRotation(Vector3.up, hit.normal);
@@ -144,7 +144,6 @@ public class TerrainChunk
 		this.heightMap = (HeightMap)heightMapObject;
 		heightMapReceived = true;
 		
-
 		UpdateTerrainChunk ();
 	}
 

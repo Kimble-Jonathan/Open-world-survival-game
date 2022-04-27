@@ -4,21 +4,26 @@ using UnityEngine;
 public class Player : MonoBehaviour, IDamageable
 {
     [SerializeField]
-    private AttackRadius AttackRadius;
+    private PlayerAttack AttackRadius;
     [SerializeField]
     private Animator Animator;
     private Coroutine LookCoroutine;
+    public healthbarsricpt healthbar;
 
-    [SerializeField]
-    private int Health = 300;
+    
+    public int Health = 300;
 
     private const string ATTACK_TRIGGER = "Attack";
 
     private void Awake()
     {
         AttackRadius.OnAttack += OnAttack;
+        healthbar.setMaxHealth(Health);
     }
-
+    void Start()
+    {
+        
+    }
     private void OnAttack(IDamageable Target)
     {
         Animator.SetTrigger(ATTACK_TRIGGER);
@@ -50,6 +55,7 @@ public class Player : MonoBehaviour, IDamageable
     public void TakeDamage(int Damage)
     {
         Health -= Damage;
+        healthbar.setHeath(Health);
 
         if (Health <= 0)
         {

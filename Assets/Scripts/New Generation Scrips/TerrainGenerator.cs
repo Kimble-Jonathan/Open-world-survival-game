@@ -40,7 +40,7 @@ public class TerrainGenerator : MonoBehaviour
 
 	void Awake() 
 	{
-		
+		heightMapSettings.noiseSettings.seed = Random.Range(1,10000000);
 		heightMap = HeightMapGenerator.GenerateHeightMap(meshSettings.numVertsPerLine, meshSettings.numVertsPerLine,heightMapSettings,viewedChunkCoord);
 		
 		textureSettings.ApplyToMaterial (mapMaterial);
@@ -56,9 +56,9 @@ public class TerrainGenerator : MonoBehaviour
 	}
 
 	void Start()
-	{
+	{	
 		StartCoroutine(SpawnTrees());
-		//BakeNavMesh();
+		
 	}
 
 	void Update() {
@@ -75,9 +75,9 @@ public class TerrainGenerator : MonoBehaviour
 		if ((viewerPositionOld - viewerPosition).sqrMagnitude > sqrViewerMoveThresholdForChunkUpdate) {
 			viewerPositionOld = viewerPosition;
 			UpdateVisibleChunks ();
-
+			StartCoroutine(SpawnTrees());
 		}
-
+		
 		
 		
 	}
@@ -89,15 +89,8 @@ public class TerrainGenerator : MonoBehaviour
 
 		foreach(var chunk in terrainChunkDictionary)
 		{
-			chunk.Value.SpawnTrees(chunk.Value.GetChunkCoords());
+			chunk.Value.SpawnTrees();
 			//chunk.Value.Bake();
-		}
-	}
-	public void BakeNavMesh()
-	{
-		foreach(var chunk in terrainChunkDictionary)
-		{
-			
 		}
 	}
 
